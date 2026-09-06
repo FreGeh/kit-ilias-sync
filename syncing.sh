@@ -8,7 +8,7 @@ BASE_DIR="/home/${USER_NAME}"
 PFERD_DIR="${BASE_DIR}/pferd"
 NEXTCLOUD_DIR="${BASE_DIR}/Nextcloud/${SEMESTER}"
 
-PFERD_BIN="${PFERD_DIR}/pferd"
+PFERD_BIN="${PFERD_DIR}/pferd-linux"
 PFERD_CONFIG="${PFERD_DIR}/config_${SEMESTER}.ini"
 LOG_FILE="${PFERD_DIR}/pferd.log"
 LOGIN_PASS="${PFERD_DIR}/.pferd_pass"
