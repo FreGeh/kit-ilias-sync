@@ -7,7 +7,7 @@ Sync KIT ILIAS with [PFERD](https://github.com/Garmelon/PFERD) and upload the fi
 ### 1. Create the server
 
 Create a Linux instance and set up SSH access. 
-(A free, easy option is [bwCloud-OS](https://api.ka.bwcos.de/home/)
+(A free, easy option is [bwCloud-OS](https://api.ka.bwcos.de/home/))
 
 Expected structure:
 
