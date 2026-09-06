@@ -17,6 +17,7 @@ RCLONE_CONFIG="${BASE_DIR}/.config/rclone/rclone.conf"
 RCLONE_REMOTE="bwsyncshare_pferd"
 RCLONE_REMOTE_PATH="KIT Sharing/${SEMESTER}"
 
+# check if login data was given, if not fix it
 if [[ ! -f "$LOGIN_PASS" ]]; then
     echo "ERROR: Missing credentials file: $LOGIN_PASS"
     echo "Create it with:"
@@ -27,8 +28,15 @@ fi
 ts() { date -Is; }
 trap 'ec=$?; echo "[ERROR] $(ts) exit=$ec" | tee -a "$LOG_FILE"; exit $ec' ERR
 
+# keep only last 10k lines of log file, to keep it small
+if [[ -f "$LOG_FILE" ]]; then
+    tail -n 10000 "$LOG_FILE" > "${LOG_FILE}.tmp"
+    mv "${LOG_FILE}.tmp" "$LOG_FILE"
+fi
+
 mkdir -p "$NEXTCLOUD_DIR"
 
+# use pferd to get updated ilias content
 echo "===== [START] $(ts) =====" | tee -a "$LOG_FILE"
 echo "[PFERD] start $(ts)" | tee -a "$LOG_FILE"
 p_start=$(date +%s)
@@ -36,6 +44,8 @@ p_start=$(date +%s)
 "$PFERD_BIN" -c "$PFERD_CONFIG" >> "$LOG_FILE" 2>&1
 
 echo "[PFERD] end   $(ts) (duration: $(( $(date +%s) - p_start ))s)" | tee -a "$LOG_FILE"
+
+# sync it via rclone
 echo "[RCLONE] start $(ts)" | tee -a "$LOG_FILE"
 r_start=$(date +%s)
 
@@ -48,4 +58,5 @@ rclone --config "$RCLONE_CONFIG" copy -u \
   --log-level INFO
 
 echo "[RCLONE] end   $(ts) (duration: $(( $(date +%s) - r_start ))s)" | tee -a "$LOG_FILE"
+
 echo "===== [DONE]  $(ts) =====" | tee -a "$LOG_FILE"
