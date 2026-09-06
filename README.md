@@ -1,5 +1,3 @@
-# pferd_sync for Linux
-
 Sync KIT ILIAS with [PFERD](https://github.com/Garmelon/PFERD) and upload the files to bwSync&Share using `rclone`.
 
 ## Setup
