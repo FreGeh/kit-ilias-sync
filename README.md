@@ -1,4 +1,4 @@
-Sync KIT ILIAS with [PFERD](https://github.com/Garmelon/PFERD) and upload the files to bwSync&Share using `rclone`.
+Sync ILIAS with [PFERD](https://github.com/Garmelon/PFERD) and upload the files to bwSync&Share using `rclone`.
 
 ## Setup
 
