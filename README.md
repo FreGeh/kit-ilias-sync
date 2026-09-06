@@ -58,18 +58,11 @@ Fill in the two existing lines with your ILIAS credentials.
 ### 4. Configure the semester
 
 Set the current semester in `syncing.sh`:
-
 ```bash
 SEMESTER="SS26"
 ```
 
-Make sure the matching config exists:
-
-```text
-configs/config_SS26.ini
-```
-
-The config contains the PFERD settings and course rename rules for that semester.
+If no config exists for the semester yet, it automatically creates one from `configs/config_template.ini`, so you just gotta add or adjust the course rename rules in the generated config if needed.
 
 ### 5. Configure rclone
 
