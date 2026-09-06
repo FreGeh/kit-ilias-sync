@@ -31,12 +31,12 @@ Expected structure:
 └── pferd/
 ```
 
-### 2. Install PFERD
+### 2. Update PFERD
 
 Download the latest Linux executable:
 
 ```bash
-wget https://github.com/Garmelon/PFERD/releases/latest/download/pferd-linux
+wget -O pferd-linux https://github.com/Garmelon/PFERD/releases/latest/download/pferd-linux
 chmod +x pferd-linux
 chmod +x syncing.sh
 ```
