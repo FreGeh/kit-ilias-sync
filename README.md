@@ -66,7 +66,7 @@ SEMESTER="SS26"
 Make sure the matching config exists:
 
 ```text
-config_SS26.ini
+configs/config_SS26.ini
 ```
 
 The config contains the PFERD settings and course rename rules for that semester.
