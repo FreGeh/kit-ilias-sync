@@ -6,8 +6,24 @@ Sync KIT ILIAS with [PFERD](https://github.com/Garmelon/PFERD) and upload the fi
 
 ### 1. Create the server
 
-Create a Linux instance and set up SSH access. 
-(A free, easy option is [bwCloud-OS](https://api.ka.bwcos.de/home/))
+Create an Ubuntu server and set up SSH access.
+
+A free, good option is [bwCloud](https://api.ka.bwcos.de/home/).
+
+Install the required packages:
+
+```bash
+sudo apt update
+sudo apt install -y git wget rclone
+```
+
+Clone the repository into `/home/ubuntu/pferd`:
+
+```bash
+cd ~
+git clone https://github.com/FreGeh/kit-ilias-sync pferd
+cd pferd
+```
 
 Expected structure:
 
@@ -16,8 +32,6 @@ Expected structure:
 ├── Nextcloud/
 └── pferd/
 ```
-
-Clone this repository into `/home/ubuntu/pferd`.
 
 ### 2. Install PFERD
 
@@ -39,7 +53,9 @@ nano .pferd_pass
 chmod 600 .pferd_pass
 ```
 
-`.pferd_pass` is ignored by Git.
+Fill in the two existing lines with your ILIAS credentials.
+
+*`.pferd_pass` is ignored by Git and should never be committed*
 
 ### 4. Configure the semester
 
@@ -49,80 +65,94 @@ Set the current semester in `syncing.sh`:
 SEMESTER="SS26"
 ```
 
-Always make sure the matching PFERD config exists:
+Make sure the matching config exists:
 
 ```text
 config_SS26.ini
 ```
 
-The config determines the ILIAS courses, folder names and other PFERD settings.
+The config contains the PFERD settings and course rename rules for that semester.
 
 ### 5. Configure rclone
 
-Install `rclone` and create the bwSync&Share remote:
+Create a WebDAV remote:
 
 ```bash
 rclone config
 ```
 
-Example configuration:
+First create a new **app password** in [bwSync&Share Security Settings](https://bwsyncandshare.kit.edu/settings/user/security), to then set it up like this:
 
 ```text
 name: bwsyncshare_pferd
 type: webdav
-url: https://bwsyncandshare.kit.edu/remote.php/dav/files/<YOUR_USER>/
+url: https://bwsyncandshare.kit.edu/remote.php/dav/files/<APP_USERNAME>/
 vendor: nextcloud
-user: <YOUR_USER>
-pass: <YOUR_PASSWORD>
+user: <APP_USERNAME>
+pass: <APP_PASSWORD>
 ```
 
-The script expects the remote to be named:
+Do not use the normal KIT password here. Use the generated bwSync&Share app credentials.
+
+The remote must be named:
 
 ```text
 bwsyncshare_pferd
 ```
 
-Test it with:
+Test it:
 
 ```bash
 rclone lsd bwsyncshare_pferd:
 ```
 
+It should list your bwSync&Share folders.
+
 ### 6. Test the sync
 
-Run:
+Run the script manually first:
 
 ```bash
 ./syncing.sh
 ```
 
-PFERD downloads the selected ILIAS content into:
+PFERD downloads into:
 
 ```text
 /home/ubuntu/Nextcloud/<SEMESTER>
 ```
 
-`rclone` then uploads it to:
+`rclone` then uploads to:
 
 ```text
 bwsyncshare_pferd:KIT Sharing/<SEMESTER>
 ```
 
-### 7. Run automatically
+Check the log if something fails:
 
-Open the crontab:
+```bash
+tail -n 100 pferd.log
+```
+
+### 7. Run automatically
 
 ```bash
 crontab -e
 ```
 
-Run the sync every 15 minutes:
+For example every 15 minutes:
 
 ```cron
 */15 * * * * /home/ubuntu/pferd/syncing.sh
 ```
 
-Check the log with:
+Check:
+
+```bash
+crontab -l
+```
+
+Follow the sync log:
 
 ```bash
 tail -f /home/ubuntu/pferd/pferd.log
@@ -133,6 +163,7 @@ tail -f /home/ubuntu/pferd/pferd.log
 Replace `pferd-linux` with the newest release:
 
 ```bash
+cd /home/ubuntu/pferd
 wget -O pferd-linux https://github.com/Garmelon/PFERD/releases/latest/download/pferd-linux
 chmod +x pferd-linux
 ```
