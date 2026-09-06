@@ -11,10 +11,18 @@ NEXTCLOUD_DIR="${BASE_DIR}/Nextcloud/${SEMESTER}"
 PFERD_BIN="${PFERD_DIR}/pferd"
 PFERD_CONFIG="${PFERD_DIR}/config_${SEMESTER}.ini"
 LOG_FILE="${PFERD_DIR}/pferd.log"
+LOGIN_PASS="${PFERD_DIR}/.pferd_pass"
 
 RCLONE_CONFIG="${BASE_DIR}/.config/rclone/rclone.conf"
 RCLONE_REMOTE="bwsyncshare_pferd"
 RCLONE_REMOTE_PATH="KIT Sharing/${SEMESTER}"
+
+if [[ ! -f "$LOGIN_PASS" ]]; then
+    echo "ERROR: Missing credentials file: $LOGIN_PASS"
+    echo "Create it with:"
+    echo "  cp ${PFERD_DIR}/.pferd_pass.example $LOGIN_PASS"
+    exit 1
+fi
 
 ts() { date -Is; }
 trap 'ec=$?; echo "[ERROR] $(ts) exit=$ec" | tee -a "$LOG_FILE"; exit $ec' ERR
