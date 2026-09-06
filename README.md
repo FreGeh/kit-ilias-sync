@@ -148,13 +148,3 @@ Follow the sync log:
 ```bash
 tail -f /home/ubuntu/pferd/pferd.log
 ```
-
-## Updating PFERD
-
-Replace `pferd-linux` with the newest release:
-
-```bash
-cd /home/ubuntu/pferd
-wget -O pferd-linux https://github.com/Garmelon/PFERD/releases/latest/download/pferd-linux
-chmod +x pferd-linux
-```
