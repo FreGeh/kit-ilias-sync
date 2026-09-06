@@ -10,6 +10,7 @@ NEXTCLOUD_DIR="${BASE_DIR}/Nextcloud/${SEMESTER}"
 
 PFERD_BIN="${PFERD_DIR}/pferd-linux"
 PFERD_CONFIG="${PFERD_DIR}/configs/config_${SEMESTER}.ini"
+PFERD_CONFIG_TEMPLATE="${PFERD_DIR}/configs/config_template.ini"
 LOG_FILE="${PFERD_DIR}/pferd.log"
 LOGIN_PASS="${PFERD_DIR}/.pferd_pass"
 
@@ -23,6 +24,18 @@ if [[ ! -f "$LOGIN_PASS" ]]; then
     echo "Create it with:"
     echo "  cp ${PFERD_DIR}/.pferd_pass.example $LOGIN_PASS"
     exit 1
+fi
+
+if [[ ! -f "$PFERD_CONFIG" ]]; then
+    echo "[CONFIG] Creating config for ${SEMESTER}"
+
+    sed "s/__SEMESTER__/${SEMESTER}/g" \
+        "$PFERD_CONFIG_TEMPLATE" > "$PFERD_CONFIG"
+
+    echo "Created:"
+    echo "  $PFERD_CONFIG"
+    echo "Edit the course rename rules, then run the script again."
+    exit 0
 fi
 
 ts() { date -Is; }
