@@ -38,6 +38,10 @@ if [[ ! -f "$PFERD_CONFIG" ]]; then
     exit 0
 fi
 
+sed -i -E \
+  "s|^[[:space:]]*working_dir[[:space:]]*=.*|working_dir = ${NEXTCLOUD_DIR}|" \
+  "$PFERD_CONFIG"
+
 ts() { date -Is; }
 trap 'ec=$?; echo "[ERROR] $(ts) exit=$ec" | tee -a "$LOG_FILE"; exit $ec' ERR
 
