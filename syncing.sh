@@ -2,7 +2,7 @@
 set -euo pipefail
 
 USER_NAME="ubuntu"
-SEMESTER="SS26"
+SEMESTER="WS26"
 
 BASE_DIR="/home/${USER_NAME}"
 PFERD_DIR="${BASE_DIR}/pferd"
